@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# LocalGPT Docker Startup Script
-# This script provides easy options for running LocalGPT in Docker
+# ollama-rag-docling Docker Startup Script
+# This script provides easy options for running ollama-rag-docling in Docker
 
 set -e
 
-echo "🐳 LocalGPT Docker Deployment"
+echo "🐳 ollama-rag-docling Docker Deployment"
 echo "============================"
 
 # Function to check if local Ollama is running
@@ -21,14 +21,14 @@ check_local_ollama() {
 
 # Function to start with local Ollama
 start_with_local_ollama() {
-    echo "🚀 Starting LocalGPT containers (using local Ollama)..."
+    echo "🚀 Starting ollama-rag-docling containers (using local Ollama)..."
     echo "📝 Note: Make sure your local Ollama is running on port 11434"
     
     # Use the docker.env file for configuration
     docker compose --env-file docker.env up --build -d
     
     echo ""
-    echo "🎉 LocalGPT is starting up!"
+    echo "🎉 ollama-rag-docling is starting up!"
     echo "📱 Frontend: http://localhost:3000"
     echo "🔧 Backend API: http://localhost:8000"
     echo "🧠 RAG API: http://localhost:8001"
@@ -41,7 +41,7 @@ start_with_local_ollama() {
 
 # Function to start with containerized Ollama
 start_with_container_ollama() {
-    echo "🚀 Starting LocalGPT containers (including Ollama container)..."
+    echo "🚀 Starting ollama-rag-docling containers (including Ollama container)..."
     
     # Set environment variable for containerized Ollama
     export OLLAMA_HOST=http://ollama:11434
@@ -50,7 +50,7 @@ start_with_container_ollama() {
     docker compose --profile with-ollama up --build -d
     
     echo ""
-    echo "🎉 LocalGPT is starting up!"
+    echo "🎉 ollama-rag-docling is starting up!"
     echo "📱 Frontend: http://localhost:3000"
     echo "🔧 Backend API: http://localhost:8000"
     echo "🧠 RAG API: http://localhost:8001"
@@ -82,7 +82,7 @@ show_usage() {
 
 # Function to stop containers
 stop_containers() {
-    echo "🛑 Stopping LocalGPT containers..."
+    echo "🛑 Stopping ollama-rag-docling containers..."
     docker compose down
     docker compose --profile with-ollama down 2>/dev/null || true
     echo "✅ All containers stopped"
@@ -104,7 +104,7 @@ show_status() {
     docker compose ps
     echo ""
     echo "🐳 All Docker containers:"
-    docker ps | grep -E "(rag-|CONTAINER)" || echo "No LocalGPT containers running"
+    docker ps | grep -E "(rag-|CONTAINER)" || echo "No ollama-rag-docling containers running"
 }
 
 # Main script logic

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Demo Batch Indexing Script for LocalGPT RAG System
+Demo Batch Indexing Script for ollama-rag-docling RAG System
 
 This script demonstrates how to perform batch indexing of multiple documents
 using configuration files. It's designed to showcase the full capabilities
@@ -219,7 +219,7 @@ class BatchIndexingDemo:
     
     def run_demo(self):
         """Run the complete batch indexing demo."""
-        print("🚀 LocalGPT Batch Indexing Demo")
+        print("🚀 ollama-rag-docling Batch Indexing Demo")
         print("=" * 50)
         
         # Show demo features
@@ -248,7 +248,7 @@ class BatchIndexingDemo:
                     print(f"      Documents: {len(index_info.get('documents', []))}")
         
         print(f"\n🎉 Demo completed successfully!")
-        print(f"💡 You can now use these indexes in the LocalGPT interface.")
+        print(f"💡 You can now use these indexes in the ollama-rag-docling interface.")
 
 
 def create_sample_config():
@@ -333,14 +333,14 @@ def create_sample_config():
 def main():
     """Main entry point for the demo script."""
     parser = argparse.ArgumentParser(
-        description="LocalGPT Batch Indexing Demo",
+        description="ollama-rag-docling Batch Indexing Demo",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
   python demo_batch_indexing.py --config batch_indexing_config.json
   python demo_batch_indexing.py --create-sample-config
   
-This demo showcases the advanced batch indexing capabilities of LocalGPT,
+This demo showcases the advanced batch indexing capabilities of ollama-rag-docling,
 including multi-index creation, advanced configuration options, and
 comprehensive processing pipelines.
         """

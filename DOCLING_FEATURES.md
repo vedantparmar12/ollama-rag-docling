@@ -2,7 +2,7 @@
 
 ## What's New?
 
-This enhanced version of LocalGPT integrates **IBM's Docling Vision-Language Model** for superior document understanding, multi-format support, and audio transcription capabilities.
+This enhanced version of ollama-rag-docling integrates **IBM's Docling Vision-Language Model** for superior document understanding, multi-format support, and audio transcription capabilities.
 
 ### ✨ Key Enhancements
 
@@ -128,7 +128,7 @@ Result: Complete code block with proper formatting
 
 ### Architecture Integration
 
-The Docling enhancements are **fully integrated** into the existing LocalGPT pipeline:
+The Docling enhancements are **fully integrated** into the existing ollama-rag-docling pipeline:
 
 ```
 Documents → Docling VLM Converter → Enhanced Chunks → Your Custom Reranker → Results
@@ -198,7 +198,7 @@ All Docling features can be toggled in the UI or via API:
 
 This enhanced version integrates cutting-edge document AI technologies:
 
-- **Original LocalGPT** - [PromtEngineer/localGPT](https://github.com/PromtEngineer/localGPT)
+- **Original ollama-rag-docling** - [PromtEngineer/localGPT](https://github.com/PromtEngineer/localGPT)
 - **Docling** - [IBM Research](https://github.com/docling-project/docling)
 - **Granite-Docling-258M** - IBM's Vision-Language Model
 - **Whisper Turbo** - OpenAI's speech recognition
@@ -217,7 +217,7 @@ This enhanced version integrates cutting-edge document AI technologies:
 
 - [Docling Integration Guide](./DOCLING_INTEGRATION_GUIDE.md) - Full implementation details
 - [Docling Recommendations](./DOCLING_RECOMMENDATIONS.md) - Strategic recommendations
-- [Original LocalGPT README](./README.md) - Base system documentation
+- [Original ollama-rag-docling README](./README.md) - Base system documentation
 
 ---
 
@@ -260,4 +260,4 @@ For issues or questions:
 
 ---
 
-**Built with ❤️ by Vedant Parmar** | Powered by Docling VLM & LocalGPT
+**Built with ❤️ by Vedant Parmar** | Powered by Docling VLM & ollama-rag-docling

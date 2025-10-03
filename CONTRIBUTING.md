@@ -1,6 +1,6 @@
-# Contributing to LocalGPT
+# Contributing to ollama-rag-docling
 
-Thank you for your interest in contributing to LocalGPT! This guide will help you get started with contributing to our private document intelligence platform.
+Thank you for your interest in contributing to ollama-rag-docling! This guide will help you get started with contributing to our private document intelligence platform.
 
 ## 🚀 Quick Start for Contributors
 
@@ -446,7 +446,7 @@ We use semantic versioning (semver):
 
 ## 🙏 Thank You!
 
-Thank you for contributing to LocalGPT! Your contributions help make private document intelligence accessible to everyone.
+Thank you for contributing to ollama-rag-docling! Your contributions help make private document intelligence accessible to everyone.
 
 For questions about contributing, please:
 1. Check existing documentation

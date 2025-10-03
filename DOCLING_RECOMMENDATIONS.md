@@ -1,8 +1,8 @@
-# 🎯 Docling Enhancement Recommendations for LocalGPT
+# 🎯 Docling Enhancement Recommendations for ollama-rag-docling
 
 ## Executive Summary
 
-Based on analysis of both your LocalGPT project and IBM's Docling capabilities, I recommend a **hybrid integration strategy** that **preserves your custom components** while adding Docling's advanced features to improve RAG accuracy and speed.
+Based on analysis of both your ollama-rag-docling project and IBM's Docling capabilities, I recommend a **hybrid integration strategy** that **preserves your custom components** while adding Docling's advanced features to improve RAG accuracy and speed.
 
 ---
 

@@ -1,8 +1,8 @@
-# 🐳 Docker Troubleshooting Guide - LocalGPT
+# 🐳 Docker Troubleshooting Guide - ollama-rag-docling
 
 _Last updated: 2025-01-07_
 
-This guide helps diagnose and fix Docker-related issues with LocalGPT's containerized deployment.
+This guide helps diagnose and fix Docker-related issues with ollama-rag-docling's containerized deployment.
 
 ---
 

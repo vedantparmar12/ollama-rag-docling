@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LocalGPT with Docling VLM",
+  title: "ollama-rag-docling with Docling VLM",
   description: "Advanced RAG System with Docling Vision-Language Model - Created by Vedant Parmar",
 };
 

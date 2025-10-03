@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react"
-import { LocalGPTChat } from "@/components/ui/localgpt-chat"
+import { OllamaRagDoclingChat } from "@/components/ui/localgpt-chat"
 import { SessionSidebar } from "@/components/ui/session-sidebar"
 import { SessionChat } from '@/components/ui/session-chat'
 import { chatAPI, ChatSession } from "@/lib/api"
@@ -115,7 +115,7 @@ export function Demo() {
                         <div className="flex items-center justify-center h-full">
                             <div className="space-y-8">
                                 <div className="text-center space-y-2">
-                                    <h1 className="text-4xl font-bold text-white">LocalGPT with Docling VLM</h1>
+                                    <h1 className="text-4xl font-bold text-white">ollama-rag-docling with Docling VLM</h1>
                                     <p className="text-lg text-gray-400">What can I help you find today?</p>
                                     <p className="text-sm text-gray-500">Enhanced with advanced document understanding & audio transcription</p>
                                 </div>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Simple Index Creation Script for LocalGPT RAG System
+# Simple Index Creation Script for ollama-rag-docling RAG System
 # Usage: ./simple_create_index.sh "Index Name" "path/to/document.pdf" [additional_files...]
 
 set -e  # Exit on any error
@@ -46,7 +46,7 @@ check_prerequisites() {
     
     # Check if we're in the right directory
     if [ ! -f "run_system.py" ] || [ ! -d "rag_system" ]; then
-        print_error "This script must be run from the LocalGPT project root directory."
+        print_error "This script must be run from the ollama-rag-docling project root directory."
         exit 1
     fi
     
@@ -221,7 +221,7 @@ main() {
     create_index "$index_name" "${valid_documents[@]}"
     
     print_success "Index creation completed!"
-    print_status "You can now use the index in the LocalGPT interface."
+    print_status "You can now use the index in the ollama-rag-docling interface."
 }
 
 # Run main function with all arguments

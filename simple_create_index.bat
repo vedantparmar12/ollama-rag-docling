@@ -1,5 +1,5 @@
 @echo off
-REM Simple Index Creation Script for LocalGPT RAG System (Windows)
+REM Simple Index Creation Script for ollama-rag-docling RAG System (Windows)
 REM Usage: simple_create_index.bat "Index Name" "path\to\document.pdf" [additional_files...]
 
 setlocal enabledelayedexpansion
@@ -22,11 +22,11 @@ if %errorlevel% neq 0 (
 
 REM Check if we're in the right directory
 if not exist "run_system.py" (
-    echo [ERROR] This script must be run from the LocalGPT project root directory.
+    echo [ERROR] This script must be run from the ollama-rag-docling project root directory.
     exit /b 1
 )
 if not exist "rag_system" (
-    echo [ERROR] This script must be run from the LocalGPT project root directory.
+    echo [ERROR] This script must be run from the ollama-rag-docling project root directory.
     exit /b 1
 )
 
@@ -159,7 +159,7 @@ REM Clean up
 del "%temp_script%" 2>nul
 
 echo [SUCCESS] Index creation completed!
-echo [INFO] You can now use the index in the LocalGPT interface.
+echo [INFO] You can now use the index in the ollama-rag-docling interface.
 
 goto :eof
 

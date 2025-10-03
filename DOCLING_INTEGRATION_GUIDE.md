@@ -1,8 +1,8 @@
-# 🚀 Docling Integration Guide for LocalGPT
+# 🚀 Docling Integration Guide for ollama-rag-docling
 
 ## Overview
 
-This guide shows how to integrate advanced Docling features into your LocalGPT project **without breaking** your existing custom components:
+This guide shows how to integrate advanced Docling features into your ollama-rag-docling project **without breaking** your existing custom components:
 
 ✅ **Preserved**: Your custom `MarkdownRecursiveChunker`, `QwenReranker`, LanceDB, Graph Extraction
 ✨ **Added**: VLM document understanding, audio transcription, table extraction, multi-format support

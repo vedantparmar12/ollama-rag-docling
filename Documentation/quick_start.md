@@ -301,7 +301,7 @@ If you see:
 - ✅ Frontend accessible at http://localhost:3000  
 - ✅ No error messages
 
-You're ready to start using LocalGPT!
+You're ready to start using ollama-rag-docling!
 
 ### What's Next?
 
