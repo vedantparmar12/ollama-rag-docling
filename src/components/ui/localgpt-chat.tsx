@@ -66,7 +66,7 @@ function useAutoResizeTextarea({
     return { textareaRef, adjustHeight };
 }
 
-export function LocalGPTChat() {
+export function OllamaRagDoclingChat() {
     const [value, setValue] = useState("");
     const { textareaRef, adjustHeight } = useAutoResizeTextarea({
         minHeight: 60,

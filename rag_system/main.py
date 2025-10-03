@@ -35,9 +35,12 @@ OLLAMA_CONFIG = {
 # External Model Configuration (HuggingFace models used directly)
 EXTERNAL_MODELS = {
     "embedding_model": "Qwen/Qwen3-Embedding-0.6B",  # HuggingFace embedding model (1024 dims - fresh start)
-    "reranker_model": "answerdotai/answerai-colbert-small-v1",  # ColBERT reranker
+    "reranker_model": "jinaai/jina-colbert-v2",  # 🆕 Jina-ColBERT-v2 (8192 tokens, multilingual)
+    "reranker_model_fallback": "answerdotai/answerai-colbert-small-v1",  # Fallback: answerai-colbert (512 tokens)
     "vision_model": "Qwen/Qwen-VL-Chat",  # Vision model for multimodal
-    "fallback_reranker": "BAAI/bge-reranker-base",  # Backup reranker
+    "fallback_reranker": "BAAI/bge-reranker-base",  # Backup cross-encoder reranker
+    "code_embedding_model": "microsoft/codebert-base",  # 🆕 For code chunks
+    "table_reranker": "answerdotai/answerai-colbert-small-v1",  # 🆕 For table reranking
 }
 
 # ============================================================================
@@ -80,7 +83,7 @@ PIPELINE_CONFIGS = {
         "vision_model_name": EXTERNAL_MODELS["vision_model"],
         # 🎯 RERANKER: AI-powered reranking with ColBERT
         "reranker": {
-            "enabled": True, 
+            "enabled": True,
             "type": "ai",
             "strategy": "rerankers-lib",
             "model_name": EXTERNAL_MODELS["reranker_model"],
@@ -106,6 +109,37 @@ PIPELINE_CONFIGS = {
             "embedding_batch_size": 50,
             "enrichment_batch_size": 10,
             "enable_progress_tracking": True
+        },
+        # 🆕 Advanced features (2025 enhancements)
+        "advanced_features": {
+            "self_consistency": {
+                "enabled": False,  # Enable for critical queries
+                "n_samples": 5,
+                "temperature": 0.7,
+                "consistency_threshold": 0.75
+            },
+            "context_pruning": {
+                "enabled": True,  # Already implemented via sentence_pruner.py
+                "threshold": 0.1,
+                "model_name": "naver/provence-reranker-debertav3-v1"
+            },
+            "multimodal_embeddings": {
+                "enabled": False,  # Enable to use specialized embeddings
+                "enable_code": True,
+                "enable_table": True
+            },
+            "maxmin_chunking": {
+                "enabled": False,  # Alternative chunking strategy
+                "min_chunk_size": 100,
+                "max_chunk_size": 1500,
+                "similarity_threshold": 0.80,
+                "boundary_threshold": 0.70
+            },
+            "realtime_rag": {
+                "enabled": False,  # Enable for dynamic data queries
+                "cache_ttl": 60,
+                "sources": ["weather", "stock", "database"]
+            }
         }
     },
     "fast": {

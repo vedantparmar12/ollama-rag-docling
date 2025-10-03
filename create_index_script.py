@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Interactive Index Creation Script for LocalGPT RAG System
+Interactive Index Creation Script for ollama-rag-docling RAG System
 
 This script provides a user-friendly interface for creating document indexes
-using the LocalGPT RAG system. It supports both single documents and batch
+using the ollama-rag-docling RAG system. It supports both single documents and batch
 processing of multiple documents.
 
 Usage:
@@ -176,7 +176,7 @@ class IndexCreator:
     
     def create_index_interactive(self) -> None:
         """Run the interactive index creation process."""
-        print("🚀 LocalGPT Index Creation Tool")
+        print("🚀 ollama-rag-docling Index Creation Tool")
         print("=" * 50)
         
         # Get index details
@@ -341,7 +341,7 @@ def create_sample_batch_config():
 
 def main():
     """Main entry point for the script."""
-    parser = argparse.ArgumentParser(description="LocalGPT Index Creation Tool")
+    parser = argparse.ArgumentParser(description="ollama-rag-docling Index Creation Tool")
     parser.add_argument("--batch", help="Batch configuration file", type=str)
     parser.add_argument("--config", help="Custom pipeline configuration file", type=str)
     parser.add_argument("--create-sample", action="store_true", help="Create sample batch config")

@@ -1,10 +1,10 @@
 @echo off
-REM LocalGPT Docker Startup Script for Windows
-REM This script provides easy options for running LocalGPT in Docker
+REM ollama-rag-docling Docker Startup Script for Windows
+REM This script provides easy options for running ollama-rag-docling in Docker
 
 setlocal enabledelayedexpansion
 
-echo 🐳 LocalGPT Docker Deployment
+echo 🐳 ollama-rag-docling Docker Deployment
 echo ============================
 echo.
 
@@ -38,13 +38,13 @@ if %errorlevel% equ 0 (
 :start_local
 call :check_local_ollama
 if %errorlevel% equ 0 (
-    echo 🚀 Starting LocalGPT containers (using local Ollama^)...
+    echo 🚀 Starting ollama-rag-docling containers (using local Ollama^)...
     echo 📝 Note: Make sure your local Ollama is running on port 11434
 
     docker compose --env-file docker.env up --build -d
 
     echo.
-    echo 🎉 LocalGPT is starting up!
+    echo 🎉 ollama-rag-docling is starting up!
     echo 📱 Frontend: http://localhost:3000
     echo 🔧 Backend API: http://localhost:8000
     echo 🧠 RAG API: http://localhost:8001
@@ -70,14 +70,14 @@ if %errorlevel% equ 0 (
 goto :eof
 
 :start_container
-echo 🚀 Starting LocalGPT containers (including Ollama container^)...
+echo 🚀 Starting ollama-rag-docling containers (including Ollama container^)...
 
 set OLLAMA_HOST=http://ollama:11434
 
 docker compose --profile with-ollama up --build -d
 
 echo.
-echo 🎉 LocalGPT is starting up!
+echo 🎉 ollama-rag-docling is starting up!
 echo 📱 Frontend: http://localhost:3000
 echo 🔧 Backend API: http://localhost:8000
 echo 🧠 RAG API: http://localhost:8001
@@ -90,7 +90,7 @@ echo 🛑 Stop services: docker compose --profile with-ollama down
 goto :eof
 
 :stop_containers
-echo 🛑 Stopping LocalGPT containers...
+echo 🛑 Stopping ollama-rag-docling containers...
 docker compose down
 docker compose --profile with-ollama down 2>nul
 echo ✅ All containers stopped
@@ -112,7 +112,7 @@ docker compose ps
 echo.
 echo 🐳 All Docker containers:
 docker ps | findstr /C:"rag-" /C:"CONTAINER"
-if %errorlevel% neq 0 echo No LocalGPT containers running
+if %errorlevel% neq 0 echo No ollama-rag-docling containers running
 goto :eof
 
 :show_usage

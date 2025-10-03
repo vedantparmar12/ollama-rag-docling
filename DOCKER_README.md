@@ -1,6 +1,6 @@
-# 🐳 LocalGPT Docker Deployment Guide
+# 🐳 ollama-rag-docling Docker Deployment Guide
 
-This guide covers running LocalGPT using Docker containers with local Ollama for optimal performance.
+This guide covers running ollama-rag-docling using Docker containers with local Ollama for optimal performance.
 
 ## 🚀 Quick Start
 
@@ -16,7 +16,7 @@ ollama serve
 ollama pull qwen3:0.6b
 ollama pull qwen3:8b
 
-# 4. Clone and start LocalGPT
+# 4. Clone and start ollama-rag-docling
 git clone https://github.com/your-org/rag-system.git
 cd rag-system
 ./start-docker.sh
