@@ -1,0 +1,237 @@
+# OllamaRAG-Docling - Enhanced by Vedant Parmar
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# ============================================
+# Node.js / Frontend Dependencies
+# ============================================
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production builds
+/build
+/dist
+
+# ============================================
+# Python / Backend
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Python distribution / packaging
+.eggs/
+*.egg-info/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ============================================
+# Environment & Secrets
+# ============================================
+.env
+.env*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# ============================================
+# Database Files
+# ============================================
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+#backend/*.db
+# backend/chat_history.db
+
+# Vector databases
+lancedb/
+chroma_db/
+backend/chroma_db/
+backend/chroma_db/**
+
+# Pickle files
+*.pkl
+*.pickle
+
+# ============================================
+# RAG System Data & Uploads
+# ============================================
+# Document uploads
+/shared_uploads
+/index_store
+backend/shared_uploads/
+rag_system/documents/
+
+# Index store artifacts
+index_store/overviews/
+index_store/bm25/
+index_store/graph/
+
+# Ollama data
+ollama_data/
+
+# Backups
+backups/
+*.backup
+
+# ============================================
+# Document Files (User Data)
+# ============================================
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.ppt
+*.xlsx
+*.xls
+*.mp3
+*.wav
+*.m4a
+*.flac
+*.m4v
+*.mp4
+
+# ============================================
+# Logs & Runtime Files
+# ============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ============================================
+# OS & Editor Files
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+nul
+
+# Linux
+*~
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*.swn
+*.bak
+*.tmp
+*~
+
+# ============================================
+# Build & Distribution
+# ============================================
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Vercel
+.vercel
+
+# ============================================
+# Docker & Deployment
+# ============================================
+# Docker volumes
+docker-compose.override.yml
+.dockerignore
+
+# ============================================
+# AI & ML Model Artifacts
+# ============================================
+# Model weights and caches
+models/
+*.bin
+*.pt
+*.pth
+*.onnx
+*.h5
+*.model
+
+# Hugging Face cache
+.cache/
+transformers_cache/
+sentence_transformers/
+
+# ============================================
+# Testing & Coverage
+# ============================================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# ============================================
+# Docling Specific
+# ============================================
+# Docling temporary files
+docling_cache/
+.docling/
+
+# Transcription artifacts
+transcripts/
+audio_cache/
+
+# ============================================
+# Exceptions (Files to Keep)
+# ============================================
+# Keep example env file
+!.env.example
+
+# Keep docker env
+!docker.env
+
+# Keep sample database structure
+!backend/chat_data.db
+
+# Keep example documents (if any)
+!rag_system/documents/README.md
+!shared_uploads/README.md
+
+# ============================================
+# Claude Code
+# ============================================
+.claude
