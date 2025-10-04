@@ -12,7 +12,15 @@ class ChatDatabase:
             if os.path.exists("/app"):  # Docker environment
                 self.db_path = "/app/backend/chat_data.db"
             else:  # Local development environment
-                self.db_path = "backend/chat_data.db"
+                # Check if we're already in the backend directory
+                if os.path.basename(os.getcwd()) == "backend":
+                    self.db_path = "chat_data.db"
+                else:
+                    self.db_path = "backend/chat_data.db"
+                # Ensure the directory exists
+                db_dir = os.path.dirname(self.db_path)
+                if db_dir and not os.path.exists(db_dir):
+                    os.makedirs(db_dir, exist_ok=True)
         else:
             self.db_path = db_path
         self.init_database()

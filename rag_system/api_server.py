@@ -7,10 +7,10 @@ import requests
 import sys
 import logging
 
-# Add backend directory to path for database imports
-backend_dir = os.path.join(os.path.dirname(__file__), '..', 'backend')
-if backend_dir not in sys.path:
-    sys.path.append(backend_dir)
+# Add project root to path for imports
+project_root = os.path.join(os.path.dirname(__file__), '..')
+if project_root not in sys.path:
+    sys.path.insert(0, os.path.abspath(project_root))
 
 from backend.database import ChatDatabase, generate_session_title
 from rag_system.main import get_agent
