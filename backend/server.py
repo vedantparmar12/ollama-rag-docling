@@ -1,6 +1,8 @@
 import json
 import http.server
 import socketserver
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="cgi")
 import cgi
 import os
 import uuid
