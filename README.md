@@ -27,10 +27,6 @@ Ollama RAG Docling is a state-of-the-art Retrieval-Augmented Generation (RAG) sy
 
 ---
 
-## 🎯 Overview
-
-**Ollama RAG Docling** is an advanced Retrieval-Augmented Generation (RAG) system that combines cutting-edge document processing, vector search, and large language models to provide intelligent question-answering capabilities over diverse document collections.
-
 ### What is RAG?
 
 Retrieval-Augmented Generation (RAG) enhances LLM responses by:
