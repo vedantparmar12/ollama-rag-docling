@@ -1,5 +1,9 @@
 # Ollama RAG Docling - Complete System Documentation
 
+## 🎯 Overview
+Ollama RAG Docling is a state-of-the-art Retrieval-Augmented Generation (RAG) system designed to provide intelligent, context-aware question-answering over your private document and media collections. It leverages local Large Language Models (LLMs) via Ollama and incorporates advanced document processing techniques from Docling and cutting-edge RAG research from 2025 to achieve high accuracy and performance.
+
+
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Python](https://img.shields.io/badge/python-3.8+-green)
 ![Next.js](https://img.shields.io/badge/next.js-14+-black)
