@@ -23,9 +23,32 @@ class VectorIndexer:
     Handles the indexing of vector embeddings and rich metadata into LanceDB.
     The 'text' field is the content that gets embedded (which can be enriched).
     The original, clean text is stored in the metadata.
+
+    Supports incremental indexing via chunk hash tracking.
     """
     def __init__(self, db_manager: LanceDBManager):
         self.db_manager = db_manager
+
+    def get_existing_chunk_ids(self, table_name: str) -> set:
+        """
+        Get set of chunk IDs already in the index.
+
+        Args:
+            table_name: LanceDB table name
+
+        Returns:
+            Set of existing chunk_id values
+        """
+        try:
+            if table_name not in self.db_manager.db.table_names():
+                return set()
+
+            tbl = self.db_manager.get_table(table_name)
+            df = tbl.to_pandas()
+            return set(df['chunk_id'].unique())
+        except Exception as e:
+            print(f"⚠️  Could not read existing chunk IDs: {e}")
+            return set()
 
     def index(self, table_name: str, chunks: List[Dict[str, Any]], embeddings: np.ndarray):
         if len(chunks) != len(embeddings):
