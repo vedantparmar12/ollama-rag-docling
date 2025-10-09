@@ -108,7 +108,10 @@ PIPELINE_CONFIGS = {
         "indexing": {
             "embedding_batch_size": 50,
             "enrichment_batch_size": 10,
-            "enable_progress_tracking": True
+            "enable_progress_tracking": True,
+            # 🚀 INCREMENTAL INDEXING (COCO Optimization)
+            "enable_incremental_indexing": True,  # Hash-based deduplication
+            "hash_registry_path": "./index_store/hash_registry.db"
         },
         # 🆕 Advanced features (2025 enhancements)
         "advanced_features": {
@@ -171,7 +174,10 @@ PIPELINE_CONFIGS = {
         "indexing": {
             "embedding_batch_size": 100,
             "enrichment_batch_size": 50,
-            "enable_progress_tracking": False
+            "enable_progress_tracking": False,
+            # 🚀 INCREMENTAL INDEXING (even faster with larger batches!)
+            "enable_incremental_indexing": True,
+            "hash_registry_path": "./index_store/hash_registry_fast.db"
         }
     },
     "bm25": {

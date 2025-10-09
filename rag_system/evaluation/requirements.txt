@@ -1,0 +1,26 @@
+# Core dependencies (always required)
+sentence-transformers>=2.2.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+
+# LLM-free metrics
+nltk>=3.8.0
+rouge-score>=0.1.2
+
+# Optional: BERTScore for semantic similarity
+# bert-score>=0.3.13
+
+# Optional frameworks (install as needed)
+
+# TruLens - Production monitoring with dashboard
+# trulens-eval>=0.15.0
+
+# DeepEval - Unit testing and CI/CD
+# deepeval>=0.20.0
+
+# UpTrain - Free evaluation with open-source models
+# uptrain>=0.6.0
+
+# For API calls (if using external LLMs)
+# openai>=1.0.0
+# anthropic>=0.5.0

@@ -9,6 +9,7 @@ from rag_system.indexing.graph_extractor import GraphExtractor
 from rag_system.utils.ollama_client import OllamaClient
 from rag_system.indexing.contextualizer import ContextualEnricher
 from rag_system.indexing.overview_builder import OverviewBuilder
+from rag_system.indexing.chunk_hasher import ChunkHasher
 
 class IndexingPipeline:
     def __init__(self, config: Dict[str, Any], ollama_client: OllamaClient, ollama_config: Dict[str, str]):
@@ -57,6 +58,13 @@ class IndexingPipeline:
         self.embedding_batch_size = indexing_config.get("embedding_batch_size", 50)
         self.enrichment_batch_size = indexing_config.get("enrichment_batch_size", 10)
         self.enable_progress_tracking = indexing_config.get("enable_progress_tracking", True)
+
+        # Initialize incremental indexing with hash tracking
+        self.enable_incremental = indexing_config.get("enable_incremental_indexing", True)
+        if self.enable_incremental:
+            hash_db_path = indexing_config.get("hash_registry_path", "./index_store/hash_registry.db")
+            self.chunk_hasher = ChunkHasher(db_path=hash_db_path)
+            print(f"🔄 Incremental indexing enabled (hash registry: {hash_db_path})")
 
         # Treat dense retrieval as enabled by default unless explicitly disabled
         dense_cfg = retriever_configs.setdefault("dense", {})
@@ -204,6 +212,36 @@ class IndexingPipeline:
             memory_mb = estimate_memory_usage(all_chunks)
             print(f"📊 Estimated memory usage: {memory_mb:.1f}MB")
 
+            # ============================================================
+            # INCREMENTAL INDEXING: Filter out unchanged chunks
+            # ============================================================
+            chunks_to_embed = all_chunks
+            if self.enable_incremental and hasattr(self, 'chunk_hasher'):
+                with timer("Incremental Deduplication"):
+                    print(f"\n🔍 Checking for changed chunks...")
+                    original_count = len(all_chunks)
+
+                    new_chunks, unchanged_chunks = self.chunk_hasher.filter_changed_chunks(all_chunks)
+
+                    chunks_to_embed = new_chunks
+                    unchanged_count = len(unchanged_chunks)
+                    new_count = len(new_chunks)
+
+                    print(f"📊 Deduplication results:")
+                    print(f"   Total chunks: {original_count}")
+                    print(f"   Unchanged (skipped): {unchanged_count}")
+                    print(f"   New/Changed (will embed): {new_count}")
+                    print(f"   Speedup: {(unchanged_count/original_count*100):.1f}% compute saved")
+
+                    # Show hash registry statistics
+                    stats = self.chunk_hasher.get_statistics()
+                    print(f"   Hash registry: {stats['total_chunks']:,} chunks, {stats['total_documents']} docs, {stats['db_size_mb']}MB")
+            else:
+                print(f"⚠️  Incremental indexing disabled - will embed all chunks")
+
+            # Update all_chunks reference for downstream processing
+            # Note: We still use all_chunks for contextual enrichment,
+            # but only chunks_to_embed for embedding generation
             retriever_configs = self.config.get("retrievers") or self.config.get("retrieval", {})
 
             # Step 3: Optional Contextual Enrichment (before indexing for consistency)
@@ -218,23 +256,33 @@ class IndexingPipeline:
             if hasattr(self, 'contextual_enricher') and enricher_enabled:
                 with timer("Contextual Enrichment"):
                     window_size = enricher_config.get("window_size", 1)
+
+                    # Only enrich chunks that will be embedded (new/changed)
+                    chunks_to_enrich = chunks_to_embed if self.enable_incremental else all_chunks
+
                     print(f"\n🚀 CONTEXTUAL ENRICHMENT ACTIVE!")
                     print(f"   Window size: {window_size}")
                     print(f"   Model: {self.contextual_enricher.llm_model}")
                     print(f"   Batch size: {self.contextual_enricher.batch_size}")
-                    print(f"   Processing {len(all_chunks)} chunks...")
-                    
+                    print(f"   Processing {len(chunks_to_enrich)} chunks...")
+
+                    if self.enable_incremental and len(chunks_to_enrich) < len(all_chunks):
+                        print(f"   ⚡ Incremental mode: enriching only {len(chunks_to_enrich)}/{len(all_chunks)} new chunks")
+
                     # Show before/after example
-                    if all_chunks:
-                        print(f"   Example BEFORE: '{all_chunks[0]['text'][:100]}...'")
-                    
+                    if chunks_to_enrich:
+                        print(f"   Example BEFORE: '{chunks_to_enrich[0]['text'][:100]}...'")
+
                     # This modifies the 'text' field in each chunk dictionary
-                    all_chunks = self.contextual_enricher.enrich_chunks(all_chunks, window_size=window_size)
-                    
-                    if all_chunks:
-                        print(f"   Example AFTER: '{all_chunks[0]['text'][:100]}...'")
-                    
-                    print(f"✅ Enriched {len(all_chunks)} chunks with context for indexing.")
+                    enriched = self.contextual_enricher.enrich_chunks(chunks_to_enrich, window_size=window_size)
+
+                    if enriched:
+                        print(f"   Example AFTER: '{enriched[0]['text'][:100]}...'")
+
+                    # Update chunks_to_embed with enriched versions
+                    chunks_to_embed = enriched
+
+                    print(f"✅ Enriched {len(enriched)} chunks with context for indexing.")
             else:
                 print(f"⚠️  CONTEXTUAL ENRICHMENT SKIPPED:")
                 if not hasattr(self, 'contextual_enricher'):
@@ -247,13 +295,18 @@ class IndexingPipeline:
             if hasattr(self, 'vector_indexer') and hasattr(self, 'embedding_generator'):
                 with timer("Vector Embedding & Indexing"):
                     table_name = self.config["storage"].get("text_table_name") or retriever_configs.get("dense", {}).get("lancedb_table_name", "default_text_table")
-                    print(f"\n--- Generating embeddings with {self.config.get('embedding_model_name')} ---")
-                    
-                    embeddings = self.embedding_generator.generate(all_chunks)
-                    
-                    print(f"\n--- Indexing {len(embeddings)} vectors into LanceDB table: {table_name} ---")
-                    self.vector_indexer.index(table_name, all_chunks, embeddings)
-                    print("✅ Vector embeddings indexed successfully")
+
+                    # Only embed chunks that are new or changed
+                    if chunks_to_embed:
+                        print(f"\n--- Generating embeddings for {len(chunks_to_embed)} chunks with {self.config.get('embedding_model_name')} ---")
+                        embeddings = self.embedding_generator.generate(chunks_to_embed)
+
+                        print(f"\n--- Indexing {len(embeddings)} vectors into LanceDB table: {table_name} ---")
+                        self.vector_indexer.index(table_name, chunks_to_embed, embeddings)
+                        print("✅ Vector embeddings indexed successfully")
+                    else:
+                        print(f"\n⚡ All chunks unchanged - no embedding needed (100% speedup!)")
+                        print(f"   Table '{table_name}' already contains all required vectors.")
 
                     # Create FTS index on the 'text' field after adding data
                     print(f"\n--- Ensuring Full-Text Search (FTS) index on table '{table_name}' ---")
@@ -334,25 +387,40 @@ class IndexingPipeline:
                     os.makedirs(os.path.dirname(graph_path), exist_ok=True)
                     nx.write_gml(G, graph_path)
                     print(f"✅ Knowledge graph saved successfully.")
-                    
+
         print("\n--- ✅ Indexing Complete ---")
-        self._print_final_statistics(len(file_paths), len(all_chunks))
+        embedded_count = len(chunks_to_embed) if self.enable_incremental else len(all_chunks)
+        self._print_final_statistics(len(file_paths), len(all_chunks), embedded_count)
     
-    def _print_final_statistics(self, num_files: int, num_chunks: int):
+    def _print_final_statistics(self, num_files: int, num_chunks: int, num_embedded: int = None):
         """Print final indexing statistics"""
+        if num_embedded is None:
+            num_embedded = num_chunks
+
         print(f"\n📈 Final Statistics:")
         print(f"  Files processed: {num_files}")
         print(f"  Chunks generated: {num_chunks}")
         print(f"  Average chunks per file: {num_chunks/num_files:.1f}")
-        
+
+        # Incremental indexing stats
+        if self.enable_incremental and num_embedded < num_chunks:
+            skipped = num_chunks - num_embedded
+            savings_pct = (skipped / num_chunks) * 100
+            print(f"\n⚡ Incremental Indexing Savings:")
+            print(f"  Chunks embedded: {num_embedded}")
+            print(f"  Chunks skipped (unchanged): {skipped}")
+            print(f"  Compute saved: {savings_pct:.1f}%")
+
         # Component status
         components = []
+        if self.enable_incremental:
+            components.append("⚡ Incremental Indexing")
         if hasattr(self, 'contextual_enricher'):
             components.append("✅ Contextual Enrichment")
         if hasattr(self, 'vector_indexer'):
             components.append("✅ Vector & FTS Index")
         if hasattr(self, 'graph_extractor'):
             components.append("✅ Knowledge Graph")
-            
-        print(f"  Components: {', '.join(components)}")
+
+        print(f"\n  Components: {', '.join(components)}")
         print(f"  Batch sizes: Embeddings={self.embedding_batch_size}, Enrichment={self.enrichment_batch_size}")
